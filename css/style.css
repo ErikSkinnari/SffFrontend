@@ -1,0 +1,81 @@
+body {
+    font-family: 'Roboto Mono', monospace;
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    position: fixed;
+    height: 200vh;
+    width: 100vw;
+    background-color: blueviolet;
+}
+
+.navigation {
+    height: 50px;
+    background-color: aliceblue;
+}
+
+.content {
+    padding-left: 20%;
+    padding-right: 20%;
+}
+
+.main-content {
+    height: 100vh;
+}
+
+.nav-menu {
+    justify-content: space-between;
+    height: 50px;
+}
+
+.flex-h{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.navbar, .navbar2 {
+    /* position: fixed; */
+    height: 50px;
+    margin: 0;
+    height: 100%;
+    list-style: none;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.navbar {
+    padding-left: 20px;
+}
+
+.navbar2 {
+    padding-left: 0;
+    padding-right: 20px;
+}
+
+.nav-menu-item {
+    height: 100%;
+    margin-right: 20px;
+}
+
+.nav-menu-item:hover {
+    background-color: blue;
+}
+
+.main-content {
+    position: fixed;
+    background-color: whitesmoke;
+    height: 100vh;
+    width: 60%;
+    left: 50%;
+    margin-left: -30%;
+}
+
+.footer {
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    height: 50px;
+}
