@@ -1,4 +1,9 @@
-body {
+:root {
+    padding: 0;
+    margin: 0;
+}
+
+body, html {
     font-family: 'Roboto Mono', monospace;
     margin: 0;
     padding: 0;
@@ -8,7 +13,7 @@ body {
     position: fixed;
     height: 200vh;
     width: 100vw;
-    background-color: blueviolet;
+    /* background-color: blueviolet; */
 }
 
 .navigation {
@@ -17,8 +22,8 @@ body {
 }
 
 .content {
-    padding-left: 20%;
-    padding-right: 20%;
+    padding-left: 20vw;
+    padding-right: 20vw;
 }
 
 .main-content {
@@ -37,31 +42,33 @@ body {
 }
 
 .navbar, .navbar2 {
-    /* position: fixed; */
     height: 50px;
     margin: 0;
     height: 100%;
     list-style: none;
-    justify-content: space-between;
+    justify-content: space-evenly;
     text-align: center;
-}
-
-.navbar {
-    padding-left: 20px;
-}
-
-.navbar2 {
-    padding-left: 0;
-    padding-right: 20px;
+    align-items: center;
+    padding: 0;
 }
 
 .nav-menu-item {
-    height: 100%;
+    height: 50px;
     margin-right: 20px;
+    padding-top: 25px;
+    text-align: center;
+    
 }
 
-.nav-menu-item:hover {
-    background-color: blue;
+.nav-menu-item>a {
+    font-size: 15px;
+    text-decoration: none;
+    transition: 0.5s;
+}
+
+.nav-menu-item>a:hover {
+    font-size: 20px;
+    transition: .5s;
 }
 
 .main-content {
@@ -78,4 +85,30 @@ body {
     position: fixed;
     bottom: 0;
     height: 50px;
+}
+
+.margin-top {
+    margin-top: 40px;
+}
+
+#studio-content {
+    background-image: url("../img/brown-chairs-in-front-of-white-wall-3709370.jpg");
+    opacity: 0.8;
+    height: 100vh;
+    margin-left: auto;
+    margin-right: auto;
+    background-position: center;
+    background-attachment: fixed;
+    
+    /* position: fixed;
+    top: 50px;
+    left: 0; */
+}
+
+#login-form {
+    /* margin-top: 100px; */
+
+    width: 100%;
+    height: 500px;
+    background-color: black;
 }

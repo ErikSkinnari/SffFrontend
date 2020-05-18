@@ -24,7 +24,7 @@ async function GetMovies() {
 
 // Krav för G
 
-// Sidan skall kunna besökas publikt och då se en lista på samtliga tillgängliga filmer, samt en trivia lista per film.
+// Sidan skall kunna besökas publikt och då se en lista på samtliga tillgängliga filmer, samt en trivia lista per film. 
 // Det skall visas ett omslag för varje film.                                                                           !!!Backend!!!
 // Det skall finnas ett formulär för att registrera en ny filmstudio.
 // En filmstudio skall kunna logga in med sitt användarnamn "name" samt lösenord "password".
