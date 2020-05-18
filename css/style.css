@@ -1,6 +1,22 @@
+:root {
+
+    --col1: #624763;
+    --col2: rgb(241, 240, 243);
+    --col3: #372554;
+    --col4: #C89933;
+    --col5: #1E1E24;
+    
+    /* --col-1: color(#6A5E85);
+    --col-2: color(#7A7587);
+    --col-3: color(#AAA9AB);
+    --col-4: color(#D9D9D9); */
+
+}
 * {
     padding: 0;
     margin: 0;
+
+    
 }
 
 body, html {
@@ -11,12 +27,12 @@ body, html {
     position: fixed;
     height: 200vh;
     width: 100vw;
-    /* background-color: blueviolet; */
 }
 
 .navigation {
     height: 50px;
-    background-color: aliceblue;
+    background-color: black;
+    color: white;
 }
 
 .content {
@@ -54,12 +70,12 @@ body, html {
     height: 50px;
     margin-right: 20px;
     padding-top: 25px;
-    text-align: center;
-    
+    text-align: center;    
 }
 
 .nav-menu-item>a {
     font-size: 15px;
+    color: white;
     text-decoration: none;
     transition: 0.5s;
 }
@@ -95,8 +111,9 @@ body, html {
     height: 100vh;
     margin-left: auto;
     margin-right: auto;
+    /* margin-top: -100px; */
     background-position: center;
-    background-attachment: relative;
+    /* background-attachment: relative; */
 }
 
 #login-form {
@@ -107,6 +124,7 @@ body, html {
     height: 500px;
     background-color: rgba(0, 0, 0, 0.8);
 }
+
 
 .login-register {
     padding: 20px;
@@ -149,5 +167,65 @@ body, html {
     height: 25px;
     margin-top: 10px;
     border: none;
+}
 
+.moviecard {
+    margin-top: 20px;
+    margin-bottom: -10px;
+    border: solid 1px black;
+    border-radius: 3px;
+    background-color: var(--col2);
+}
+
+.moviecontent {
+    display: flex;
+}
+
+.movieimg {
+    height: 210px;
+    margin-right: 30px;
+}
+
+.movieinfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.movietitle {
+    margin: 10px 0;
+}
+
+.movietrivia {
+    margin-right: 20px;
+}
+
+.moviebuttons {
+    margin-bottom: 10px;
+}
+
+.btn {
+    width: 100px;
+    height: 30px;
+    box-shadow: none;
+    border: none;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.infobutton {
+    background-color: var(--col1);
+}
+
+.loanbutton {
+    background-color: var(--col3);
+}
+
+.returnbutton {
+    background-color: var(--col4);
+}
+
+.triviabutton {
+    background-color: var(--col5);
 }
