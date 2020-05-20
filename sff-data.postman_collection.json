@@ -19,6 +19,42 @@
 				],
 				"body": {
 					"mode": "raw",
+					"raw": "\n\t{\n\t\"name\": \"Purassic Jark\",\n\t\"stock\": 0\n\t}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44361/api/film",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44361",
+					"path": [
+						"api",
+						"film"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "film JP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
 					"raw": "\n\t{\n\t\"name\": \"Jurassic Park\",\n\t\"stock\": 1\n\t}",
 					"options": {
 						"raw": {
