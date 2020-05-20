@@ -1,9 +1,3 @@
-HelloWorld();
-
-function HelloWorld() {
-    console.log("Hi!");    
-}
-
 const contentDiv = document.getElementById("test-content");
 
 GetMovies();

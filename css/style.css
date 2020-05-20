@@ -92,7 +92,6 @@ body, html {
 } */
 
 .footer {
-    margin-top: 40px;
     justify-content: center;
     height: 50px;
     background-color: black;
@@ -143,8 +142,24 @@ body, html {
 
 .forms {
     width: calc(100% - 30px);
+    height: 300px;
     margin-top: 10px;
     padding: 15px;
+}
+
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.flex-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.stretch-col {
+    height: 100%;
 }
 
 .form-item {
@@ -166,6 +181,10 @@ body, html {
     border: none;
 }
 
+.movie-content {
+    padding-bottom: 40px;
+}
+
 .moviecard {
     margin-top: 20px;
     margin-bottom: -10px;
@@ -176,6 +195,7 @@ body, html {
 
 .moviecontent {
     display: flex;
+    
 }
 
 .movieimg {
@@ -253,6 +273,14 @@ body, html {
     background-color: var(--col4);
 }
 
+.btn-login {
+    background-color: var(--col4);
+}
+
+.btn-register {
+    background-color: var(--col1);
+}
+
 .btn-disabled {
     margin-bottom: 10px;
     padding-left: 15px;
@@ -268,4 +296,28 @@ body, html {
     background-color: lightgrey;
     color: grey;
     text-decoration: line-through;
+}
+
+.registerInfo {
+    align-self: flex-end;
+    margin-bottom: 10px;
+}
+
+.registerBottom {
+    position: absoulute;
+}
+
+#registerInfoText {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: var(--col1);
+    color: white;
+    padding: 15px;
+    border: solid white 2px;
+    border-radius: 5px;
+    left: 300px;
+    top: -150px;
+    z-index: 5;
+    display: none;
 }

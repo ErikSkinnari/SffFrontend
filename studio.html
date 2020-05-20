@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Svenska Förenade Filmstudios</title>
+    <script src="https://kit.fontawesome.com/41e6168ef8.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital@1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -19,8 +20,8 @@
                         <li class="nav-menu-item"><a id="btn-studios" href="">Studios</a></li>
                         <li class="nav-menu-item"><a id="btn-admin" href="">Administration</a></li>
                     </ul>
-                    <ul class="flex-h navbar">
-                        <li class="nav-menu-item"><a id="btn-login" href="">Logga In</a></li>
+                    <ul class="flex-h navbar" id="authentication">
+                        
                     </ul>
                 </div>
             </div>
@@ -32,55 +33,63 @@
                         <div class="login">
                             
                             <h2 class="login-title">Logga In</h2>
-                            <form class="forms">
-                                <div class="form-item">
-                                    <label for="name">Användarnamn:</label><br>
-                                    <input class="input-field" type="text" id="name" name="name">
+                            <div class="forms">
+                                <div class="flex-col stretch-col">
+                                    <div>
+                                        <div class="form-item">
+                                            <label for="username">Användarnamn:</label><br>
+                                            <input class="input-field" type="text" id="username" name="username">
+                                        </div>
+                                        <div class="form-item">
+                                            <label for="pwd">Lösenord:</label><br>
+                                            <input class="input-field" type="password" id="pwd" name="pwd">
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="">
+                                        <button class="btn btn-login" id="loginButton">Logga in</button>
+                                    </div>
                                 </div>
-                                <div class="form-item">
-                                    <label for="phonenumber">Lösenord:</label><br>
-                                    <input class="input-field" type="text" id="phonenumber" name="phonenumber">
-                                </div>
-                                
-                                <div class="form-item">
-                                    <input class="submit-button" type="submit" name="submit" value="Logga In"> 
-                                </div>
-                            </form>
+                            </div>
                         </div>
                         
                         <div class="register">
                             
-                            <h2 class="login-title">Registrera</h2>
-                            <form class="forms">
-                                <div class="form-item">
-                                    <label for="name">Användarnamn:</label><br>
-                                    <input class="input-field" type="text" id="name" name="name">
+                            <h2 class="login-title">Registrera Studio</h2>
+                            <div class="forms">
+                                <div class="flex-col stretch-col">
+                                    <div>
+                                        <div class="form-item">
+                                            <label for="name">Namn:</label><br>
+                                            <input class="input-field" type="text" id="studioname" name="name">
+                                        </div>
+                                        <div class="form-item">
+                                            <label for="phonenumber">Lösenord:</label><br>
+                                            <input class="input-field" type="password" id="newpwd1" name="newpwd1">
+                                        </div>
+                                        
+                                        <div class="form-item">
+                                            <label for="phonenumber">Repetera lösenord:</label><br>
+                                            <input class="input-field" type="password" id="newpwd2" name="newpwd2">
+                                        </div>
+                                    </div>
+                                    
+                                    <div>
+                                        <div class="flex-row">
+                                            <button class="btn btn-register" id="registerButton">Registrera</button>
+                                            <p class="registerInfo" id="registerInfo"><i class="fas fa-info-circle"></i></p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="form-item">
-                                    <label for="phonenumber">Lösenord:</label><br>
-                                    <input class="input-field" type="text" id="phonenumber" name="phonenumber">
-                                </div>
-                                
-                                <div class="form-item">
-                                    <label for="phonenumber">Repetera lösenord:</label><br>
-                                    <input class="input-field" type="text" id="phonenumber" name="phonenumber">
-                                </div>
-                                
-                                <div class="form-item">
-                                    <input class="submit-button" type="submit" name="submit" value="Logga In"> 
-                                </div>
-                            </form>
+                            </div>
                         </div>
+                        
                     </div>
                 </div>
-
+                <div id="registerInfoText">Registrera en ny filmstudio för att kunna hyra filmer samt ta del av våra andra medlemsförmåner</div>
             </div>
 
-
-
-
-
-                                
             <div class="footer content flex-h">
                 <div class="contact">
                     footer contact stuff........

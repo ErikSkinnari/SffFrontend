@@ -1,6 +1,6 @@
 var div = document.getElementById('movie-content');
 var user = sessionStorage.getItem('user');
-var loggedIn = sessionStorage.getItem('loggedIn');
+var loggedIn = sessionStorage.getItem('isLoggedIn');
 var studio = sessionStorage.getItem('studioId');
 
 GetMovies();
@@ -23,7 +23,7 @@ async function GetMovies() {
 
     if (studio !== null) {
         var rentalresult = rentaldata.filter(function(rental) {
-            return rental.studioId == studio;
+            return rental.studioId == studio && rental.returned == false;
         });
     }
 
@@ -96,10 +96,46 @@ async function GetMovies() {
             </div>
         </div>`
 
-        
-
         div.innerHTML += tempstring;
     });
+}
+
+async function ReturnMovie(id) {
+    var rentalsresponse = await fetch('https://localhost:44361/api/rentedfilm');
+
+    if(!rentalsresponse.ok){
+        return 'Unable to fetch data from API, try to reload the page.';
+    }
+    var rentaldata = await rentalsresponse.json();
+
+    console.log(rentaldata);
+
+    if (rentaldata.length > 0) {
+        var rentalresult = rentaldata.filter(function(rental) {
+            return rental.studioId == studio && rental.filmId == id && rental.returned == false;
+        });
+
+        console.log(rentalresult);
+
+        const data = { 
+            "filmId": rentalresult[0].filmId,
+            "id": rentalresult[0].id,
+            "returned": true,
+            "studioId": rentalresult[0].studioId 
+        };
+
+        console.log(data);
+
+        var rentResponse = await fetch('https://localhost:44361/api/rentedfilm/' + rentalresult[0].id, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+        });
+
+        GetMovies();
+    }
 }
 
 async function RequestMovie(id) {
@@ -111,15 +147,10 @@ async function RequestMovie(id) {
     var rentResponse = await fetch('https://localhost:44361/api/rentedfilm', {
     method: 'POST',
     headers: {
-    'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
     });
-
-    var responseData = rentResponse.json();
-
-
-    console.log("Response from request: " + responseData[0]);
 
     GetMovies();
 }
