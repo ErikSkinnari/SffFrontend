@@ -1,21 +1,27 @@
-var navbar = document.getElementById('navbar');
-var loggedIn = sessionStorage.getItem('isLoggedIn');
+window.addEventListener("load", function() {
+    var navbar = document.getElementById('navbar');
+    var loggedIn = sessionStorage.getItem('isLoggedIn');
+    var footer = document.getElementById('footer');
+    Navbar();
+    LoginRegisterPage(); // Change between
+    // GetMovies(); // Those two lines. "Quickfix"
+    Footer();
+});
 
-var footer = document.getElementById('footer');
+ListUnverifiedStudios();
 
-Navbar();
-GetMovies();
-
-footer.innerHTML = `
-<div class="footer content flex-h">
-<div class="contact">
-<p>&copy;2020 - Svenska Förenade Filmstudios</p>
-</div>
-<div class="spacer-40">|</div>
-<div class="social">
-<a href="mailto:info@sff.se"><i class="far fa-envelope"> Kontakta SFF</i></a>
-</div>
-</div>`;
+function Footer() {
+    footer.innerHTML = `
+        <div class="footer content flex-h">
+        <div class="contact">
+        <p>&copy;2020 - Svenska Förenade Filmstudios</p>
+        </div>
+        <div class="spacer-40">|</div>
+        <div class="social">
+        <a href="mailto:info@sff.se"><i class="far fa-envelope"> Kontakta SFF</i></a>
+        </div>
+        </div>`;
+}
 
 async function MovieString() {
 
@@ -134,15 +140,22 @@ async function MovieString() {
 
     console.log('before admin check');
     console.log(user);
+
+    // Button to add movie
     if (user == 'admin') {
+        console.log('User is admin. Button to add movies added.');
         output += `<div class="add-movie"><i class="fas fa-plus-circle" id="addMovieButton" onclick="AddMovie()"></i>
         <p id="addMovieInfo" class="hidden addMovieInfo">Lägg till ny film</p></div>`;
 
     }
 
     contentDiv.innerHTML = output;
+    console.log('MoviePage output set');
 
+    // Eventlistenters
     if (user == 'admin') {
+
+        console.log('User is admin. Eventlistener added to button.');
 
         var addMovieButton = document.getElementById('addMovieButton');
         var addMovieInfoText = document.getElementById('addMovieInfo');
@@ -163,7 +176,6 @@ async function MovieString() {
     }
 
 }
-
 
 async function AddMovie() {
     var contentDiv = document.getElementById("main-content");
@@ -299,7 +311,7 @@ async function ListRentedMovies() {
         <h3>StudioId</h3>
         </div>
         `
-    })
+    });
 
     contentDiv.innerHTML = rentedMovies;
 }
@@ -369,12 +381,157 @@ async function ReturnMovie(id) {
 
 async function GetMovies() {
 
-    await MovieString();
+    //await MovieString();
+
+    var contentDiv = document.getElementById("main-content");
+
+    let output = "";
+
+    var user = sessionStorage.getItem('user');
+    var loggedIn = sessionStorage.getItem('isLoggedIn');
+    var studio = sessionStorage.getItem('studioId');
+
+    document.title = "Filmbibliotek";
+
+    console.log('Sessionstorage. User: ' + user + ' LoggedIn: ' + loggedIn + ' Studio: ' + studio);
+
+    var movieresponse = await fetch('https://localhost:44361/api/film');
+    var triviaresponse = await fetch('https://localhost:44361/api/filmtrivia');
+    var rentalsresponse = await fetch('https://localhost:44361/api/rentedfilm');
+
+    if(!movieresponse.ok || !triviaresponse.ok || !rentalsresponse.ok){
+        return 'Unable to fetch data from API, try to reload the page.';
+    }
+    var moviedata = await movieresponse.json();
+    var triviadata = await triviaresponse.json();
+    var rentaldata = await rentalsresponse.json();
+
+    if (studio !== null) {
+        var rentalresult = rentaldata.filter(function(rental) {
+            return rental.studioId == studio && rental.returned == false;
+        });
+    }
+
+    moviedata.forEach(function(movie) {
+        var triviaresult = triviadata.filter(function(trivia) {
+            return trivia.filmId === movie.id;
+        });
+
+        if(loggedIn == 1 && user !== "admin"){
+            let rented = rentalresult.filter(function(r) {
+                return r.filmId === movie.id;
+            })
+            if(rented.length > 0) movie.rented = true;
+            else movie.rented = false;
+        }
+
+        if(triviaresult.length > 0) movie.trivia = triviaresult;
+        else movie.trivia = false;
+    });
+
+    let tempstring = '<div class="content" id="movie-content">';
+
+    moviedata.forEach(m => {
+        tempstring += 
+        `<div class="moviecard">
+            <div class="moviecontent">
+                <img src="img/poster.jpg" alt="" class="movieimg">
+                <div class="movieinfo">
+                    <div>
+                        <h2 class="movietitle">${m.name}</h2>
+                        <ul class="movietrivia">`
+                        if(m.trivia == false){
+                            tempstring += `<li class="trivia-item">No trivia added</li>`;
+                        }
+                        else {
+                            m.trivia.forEach(function(t) {
+                            tempstring += `<li class="trivia-item">${t.trivia}</li>`
+                            });
+                        }
+                        tempstring += `
+                        </ul>
+                    </div>
+
+                    <div class="moviefooter">
+
+                        <div class="moviebuttons">`
+                            if(loggedIn == 1) 
+                            {
+                                if (studio !== null) {
+                                    
+                                tempstring += ` <button class="loanbutton`;
+                                if (m.stock < 1 || m.rented) {
+                                    tempstring += ' btn-disabled';                                    
+                                }
+                                else tempstring += ` btn" id="loan-${m.id}`
+                                tempstring += `">Hyr</button>                            
+                                <button class="returnbutton`
+                                if(!m.rented) tempstring += ` btn-disabled`;
+                                else tempstring +=` btn" id="return-${m.id}`
+                                tempstring += `">Returnera</button>`;
+                                
+                                }
+
+
+                                tempstring += `
+                                <button class="btn triviabutton" id="displayTriviaBox-${m.id}">Lägg till Trivia</button>
+                                <div class="add-trivia hidden" id="triviaadd${m.id}">
+                                    <div>
+                                        <textarea name="trivia" id="triviatext${m.id}" rows="10" cols="40"></textarea><br>
+                                        <button class="btn triviabutton" id="addTrivia-${m.id}">Spara</button>
+                                    </div>
+                                </div>`;
+                            }
+                            tempstring += `</div>
+                        <div class="stocknumber">
+                            <h4>Tillgängligt antal: ${m.stock > 0 ? m.stock : 0 }</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>`
+
+    });
+    
+    output += tempstring;
+    output += '</div>';
+
+    console.log('before admin check');
+    console.log(user);
+    if (user == 'admin') {
+        output += `<div class="add-movie"><i class="fas fa-plus-circle" id="addMovieButton" onclick="AddMovie()"></i>
+        <p id="addMovieInfo" class="hidden addMovieInfo">Lägg till ny film</p></div>`;
+
+    }
+
+    contentDiv.innerHTML = output;
+    console.log('MoviePage output set');
+
+    if (user == 'admin') {
+
+        var addMovieButton = document.getElementById('addMovieButton');
+        var addMovieInfoText = document.getElementById('addMovieInfo');
+        
+        addMovieButton.addEventListener('mouseover', function() {
+            addMovieInfoText.classList.toggle('hidden');
+            console.log('mouse over add movie');
+        });
+        addMovieButton.addEventListener('mouseout', function() {
+            console.log('mouseout addmovieinfo');
+            addMovieInfoText.classList.toggle('hidden');
+        });
+
+        addMovieButton.addEventListener('click', function() {
+            console.log('clicked on add movie');
+            AddMovie();
+        });
+    }
     
     var movielist = document.getElementById('movie-content');
     movielist.addEventListener('click', function(e) {
 
         console.log('button clicked in div. Is this the problem?');
+        console.log('Event: ' + e.target.id);
 
         let target = e.target.id;
         let targetData = target.split('-');
@@ -401,7 +558,7 @@ async function GetMovies() {
                 VerifyStudio(id);
                 break;
         }
-    })
+    });
 }
 
 function Logout() {
@@ -411,6 +568,8 @@ function Logout() {
 }
 
 function Navbar() {
+
+    console.log('Navbar running');
 
     let navbar = document.getElementById('navbar');
 
@@ -433,7 +592,7 @@ function Navbar() {
         output += `<li class="nav-menu-item"><a id="menu-logout" href="">Logga ut</a></li>`;
 
         if (user == 'admin') {
-            output += `<li class="nav-menu-item"><a id="menu-listRentedMovied" href="">Uthyrda filmer</a></li>
+            output += `<li class="nav-menu-item"><a id="menu-listRentedMovies" href="">Uthyrda filmer</a></li>
                 <li class="nav-menu-item"><a id="menu-verifyStudios" href="">Nya Studios</a></li>`;
         }
     }
@@ -445,9 +604,9 @@ function Navbar() {
 
     navbar.innerHTML = output;
 
-
     var movieButton = document.getElementById('menu-movies');
-    movieButton.addEventListener('click', ()  => {
+    movieButton.addEventListener('click', function() {
+        console.log('clicked movies');
         GetMovies();
     });
 
@@ -460,7 +619,7 @@ function Navbar() {
     else {
         var loginFormButton = document.getElementById('menu-login');
         loginFormButton.addEventListener('click', () => {
-            LoginRegisterPage()
+            LoginRegisterPage();
         });
     }
 
@@ -470,7 +629,7 @@ function Navbar() {
             ListUnverifiedStudios();
         });
 
-        var listRentedMoviesButton = document.getElementById('menu-listRentedMovied');
+        var listRentedMoviesButton = document.getElementById('menu-listRentedMovies');
         listRentedMoviesButton.addEventListener('click', () => {
             ListRentedMovies();
         });
@@ -478,7 +637,6 @@ function Navbar() {
 }
 
 function LoginRegisterPage() {
-
 
     let contentDiv = document.getElementById("main-content");
 
@@ -593,7 +751,7 @@ async function LoginAttempt() {
         if(getUser == null) 
         {
             alert('login failed');
-            location.reload();
+            LoginRegisterPage();
         }
 
         if (getUser.verified === false) {
@@ -626,7 +784,7 @@ async function RegisterStudio() {
 
     if(pwd1 != pwd2){
         alert('passwords did not match. Try again');
-        location.reload();
+        RegisterStudio();
     }
     else {
 
@@ -654,14 +812,13 @@ async function RegisterStudio() {
         if(response.ok)
         {
             alert('studio is now registered. Await verification by admin');
-            location.reload();
+            LoginRegisterPage();
         }
         else{
             alert('Something went wrong, try again')
         }
     }
 }
-
 
 // Get user credentials
 async function GetUserByName(username) {
@@ -677,8 +834,7 @@ async function GetUserByName(username) {
     return userFromDb.length < 1 ? null : userFromDb[0];
 }
 
-
-// Should return a page wit ha table with non verified studios.
+// Should return a page withh a table with non verified studios.
 async function ListUnverifiedStudios() {
 
     var contentDiv = document.getElementById("main-content");
@@ -723,6 +879,8 @@ async function ListUnverifiedStudios() {
     });
 
     contentDiv.innerHTML = htmlString;
+
+    console.log('Studio list should be loaded...');
     }
 }
 
