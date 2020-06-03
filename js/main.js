@@ -3,9 +3,6 @@ var loggedIn = sessionStorage.getItem('isLoggedIn');
 
 var footer = document.getElementById('footer');
 
-var user = 'admin';
-var loggedIn = 1;
-
 Navbar();
 GetMovies();
 
