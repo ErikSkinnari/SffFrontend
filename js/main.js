@@ -10,8 +10,16 @@ var user = 'admin';
 var loggedIn = true;
 
 
-Navbar();
-LoginRegisterPage();
+var isFirstRun = true;
+
+if (isFirstRun) {
+    isFirstRun = true;
+    Navbar();
+    LoginRegisterPage();
+}
+
+
+
 
 
 footer.innerHTML = `
@@ -31,8 +39,8 @@ async function MovieString() {
 
     let output = "";
 
-    // var user = sessionStorage.getItem('user');
-    // var loggedIn = sessionStorage.getItem('isLoggedIn');
+    var user = sessionStorage.getItem('user');
+    var loggedIn = sessionStorage.getItem('isLoggedIn');
     var studio = sessionStorage.getItem('studioId');
 
     document.title = "Filmbibliotek";
@@ -368,6 +376,7 @@ async function ReturnMovie(id) {
 }
 
 async function GetMovies() {
+
     await MovieString();
     
     var movielist = document.getElementById('movie-content');
@@ -381,18 +390,18 @@ async function GetMovies() {
         switch (buttonType) {
             case 'loan':
                 RequestMovie(id);
-                // GetMovies();
+                GetMovies();
                 break;
             case 'return':
                 ReturnMovie(id);
-                // GetMovies();
+                GetMovies();
                 break;
             case 'displayTriviaBox':
                 DisplayTriviaBox(id);
                 break;
             case 'addTrivia':
                 AddTrivia(id);
-                // GetMovies();
+                GetMovies();
                 break;
             case 'verify':
                 VerifyStudio(id);
@@ -439,10 +448,6 @@ function Navbar() {
         output += `<li class="nav-menu-item"><a id="menu-login" href="">Logga In</a></li>`;
     }
 
-    // This is not supposed to be here. But due to some problems, those menu options is hard coded into here.
-    output += `<li class="nav-menu-item"><a id="menu-listRentedMovied" href="">Uthyrda filmer</a></li>
-                <li class="nav-menu-item"><a id="menu-verifyStudios" href="">Nya Studios</a></li>`;
-
     output += `</ul></div>`;
 
     navbar.innerHTML = output;
@@ -450,8 +455,8 @@ function Navbar() {
 
     // Something here is causing me big problems!! Why?
     // If this event listener is uncommented the loginpage flashes by and you continue to GetMovies()
-    // var movieButton = document.getElementById('menu-movies');
-    // movieButton.addEventListener('click', GetMovies());
+    var movieButton = document.getElementById('menu-movies');
+    movieButton.addEventListener('click', GetMovies());
 
     if(loggedIn === true) {
         var logoutButton = document.getElementById('menu-logout');
@@ -469,16 +474,10 @@ function Navbar() {
         var listRentedMoviesButton = document.getElementById('menu-listRentedMovied');
         listRentedMoviesButton.addEventListener('click', ListRentedMovies());
     }
-
-    // This is not supposed to be here. But due to some problems, those menu options is hard coded into here.
-    // var verifyStudiosButton = document.getElementById('menu-verifyStudios');
-    // verifyStudiosButton.addEventListener('click', ListUnverifiedStudios());
-
-    // var listRentedMoviesButton = document.getElementById('menu-listRentedMovied');
-    // listRentedMoviesButton.addEventListener('click', ListRentedMovies());
 }
 
 function LoginRegisterPage() {
+
 
     let contentDiv = document.getElementById("main-content");
 
@@ -580,7 +579,8 @@ async function LoginAttempt() {
         sessionStorage.setItem('user', 'admin');
         sessionStorage.setItem('isLoggedIn', true);
         // location.reload();
-        // return;
+        GetMovies();
+        return;
     }
     else
     {
