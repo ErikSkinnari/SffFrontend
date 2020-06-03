@@ -93,6 +93,8 @@ async function MovieString() {
                         <div class="moviebuttons">`
                             if(loggedIn == 1) 
                             {
+                                if (studio !== null) {
+                                    
                                 tempstring += ` <button class="loanbutton`;
                                 if (m.stock < 1 || m.rented) {
                                     tempstring += ' btn-disabled';                                    
@@ -102,14 +104,17 @@ async function MovieString() {
                                 <button class="returnbutton`
                                 if(!m.rented) tempstring += ` btn-disabled`;
                                 else tempstring +=` btn" id="return-${m.id}`
-                                tempstring += `">Returnera</button>
-                                <button class="btn triviabutton" id="displayTriviaBox-${m.id}">Lägg till Trivia</button>`;
+                                tempstring += `">Returnera</button>`;
+                                
+                                }
+
 
                                 tempstring += `
+                                <button class="btn triviabutton" id="displayTriviaBox-${m.id}">Lägg till Trivia</button>
                                 <div class="add-trivia hidden" id="triviaadd${m.id}">
                                     <div>
                                         <textarea name="trivia" id="triviatext${m.id}" rows="10" cols="40"></textarea><br>
-                                        <button class="btn triviabutton" id="addTrivia-${m.id}">Lägg till Trivia</button>
+                                        <button class="btn triviabutton" id="addTrivia-${m.id}">Spara</button>
                                     </div>
                                 </div>`;
                             }
