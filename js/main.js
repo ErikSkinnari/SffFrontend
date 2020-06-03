@@ -1,26 +1,13 @@
 var navbar = document.getElementById('navbar');
 var loggedIn = sessionStorage.getItem('isLoggedIn');
 
-if (loggedIn === null) {
-    loggedIn = false;
-}
 var footer = document.getElementById('footer');
 
 var user = 'admin';
-var loggedIn = true;
+var loggedIn = 1;
 
-
-var isFirstRun = true;
-
-if (isFirstRun) {
-    isFirstRun = true;
-    Navbar();
-    LoginRegisterPage();
-}
-
-
-
-
+Navbar();
+GetMovies();
 
 footer.innerHTML = `
 <div class="footer content flex-h">
@@ -69,7 +56,7 @@ async function MovieString() {
             return trivia.filmId === movie.id;
         });
 
-        if(loggedIn === "true" && user !== "admin"){
+        if(loggedIn == 1 && user !== "admin"){
             let rented = rentalresult.filter(function(r) {
                 return r.filmId === movie.id;
             })
@@ -92,7 +79,7 @@ async function MovieString() {
                     <div>
                         <h2 class="movietitle">${m.name}</h2>
                         <ul class="movietrivia">`
-                        if(m.trivia === false){
+                        if(m.trivia == false){
                             tempstring += `<li class="trivia-item">No trivia added</li>`;
                         }
                         else {
@@ -107,7 +94,7 @@ async function MovieString() {
                     <div class="moviefooter">
 
                         <div class="moviebuttons">`
-                            if(loggedIn == "true") 
+                            if(loggedIn == 1) 
                             {
                                 tempstring += ` <button class="loanbutton`;
                                 if (m.stock < 1 || m.rented) {
@@ -145,8 +132,7 @@ async function MovieString() {
 
     console.log('before admin check');
     console.log(user);
-    if (user === 'admin') {
-        console.log('inside admin if');
+    if (user == 'admin') {
         output += `<div class="add-movie"><i class="fas fa-plus-circle" id="addMovieButton" onclick="AddMovie()"></i>
         <p id="addMovieInfo" class="hidden addMovieInfo">Lägg till ny film</p></div>`;
 
@@ -164,10 +150,12 @@ async function MovieString() {
             console.log('mouse over add movie');
         });
         addMovieButton.addEventListener('mouseout', function() {
+            console.log('mouseout addmovieinfo');
             addMovieInfoText.classList.toggle('hidden');
         });
 
         addMovieButton.addEventListener('click', function() {
+            console.log('clicked on add movie');
             AddMovie();
         });
     }
@@ -200,6 +188,8 @@ async function AddMovie() {
     var addNewMovieButton = document.getElementById('addMovieButton');
 
     addNewMovieButton.addEventListener('click', async function() {
+
+        console.log('movie submitted');
 
         var newMovieTitle = document.getElementById('newMovieTitle').value;
         var newMovieImg = document.getElementById('newMovieImg').value;
@@ -382,6 +372,8 @@ async function GetMovies() {
     var movielist = document.getElementById('movie-content');
     movielist.addEventListener('click', function(e) {
 
+        console.log('button clicked in div. Is this the problem?');
+
         let target = e.target.id;
         let targetData = target.split('-');
         let buttonType = targetData[0];
@@ -421,9 +413,6 @@ function Navbar() {
     let navbar = document.getElementById('navbar');
 
     let loggedIn = sessionStorage.getItem('isLoggedIn');
-    if (loggedIn === null) {
-        loggedIn = false;
-    }
 
     console.log('LoggedIn: ' + loggedIn);
 
@@ -436,10 +425,12 @@ function Navbar() {
         </ul>
         <ul id="authentication" class="flex-h navbar">`;
 
-    if(loggedIn === true) {
+        console.log('Loggedin should add logout button: ' + loggedIn);
+
+    if(loggedIn == 1) {
         output += `<li class="nav-menu-item"><a id="menu-logout" href="">Logga ut</a></li>`;
 
-        if (user === 'admin') {
+        if (user == 'admin') {
             output += `<li class="nav-menu-item"><a id="menu-listRentedMovied" href="">Uthyrda filmer</a></li>
                 <li class="nav-menu-item"><a id="menu-verifyStudios" href="">Nya Studios</a></li>`;
         }
@@ -453,26 +444,34 @@ function Navbar() {
     navbar.innerHTML = output;
 
 
-    // Something here is causing me big problems!! Why?
-    // If this event listener is uncommented the loginpage flashes by and you continue to GetMovies()
     var movieButton = document.getElementById('menu-movies');
-    movieButton.addEventListener('click', GetMovies());
+    movieButton.addEventListener('click', ()  => {
+        GetMovies();
+    });
 
-    if(loggedIn === true) {
+    if(loggedIn == 1) {
         var logoutButton = document.getElementById('menu-logout');
-        logoutButton.addEventListener('click', Logout());
+        logoutButton.addEventListener('click', () => {
+            Logout();
+        });
     }
     else {
         var loginFormButton = document.getElementById('menu-login');
-        loginFormButton.addEventListener('click', LoginRegisterPage());
+        loginFormButton.addEventListener('click', () => {
+            LoginRegisterPage()
+        });
     }
 
-    if (loggedIn === true && user === "admin") {
+    if (loggedIn == 1 && user == 'admin') {
         var verifyStudiosButton = document.getElementById('menu-verifyStudios');
-        verifyStudiosButton.addEventListener('click', ListUnverifiedStudios());
+        verifyStudiosButton.addEventListener('click', () => {
+            ListUnverifiedStudios();
+        });
 
         var listRentedMoviesButton = document.getElementById('menu-listRentedMovied');
-        listRentedMoviesButton.addEventListener('click', ListRentedMovies());
+        listRentedMoviesButton.addEventListener('click', () => {
+            ListRentedMovies();
+        });
     }
 }
 
@@ -480,6 +479,8 @@ function LoginRegisterPage() {
 
 
     let contentDiv = document.getElementById("main-content");
+
+    console.log('Inside LoginRegisterPage');
 
     contentDiv.innerHTML = "";
     let contentstring = 
@@ -565,6 +566,8 @@ function LoginRegisterPage() {
     registerButton.addEventListener('click', () => {
         RegisterStudio();    
     });
+
+    console.log('End of LoginPage');
 }
 
 async function LoginAttempt() {
@@ -577,8 +580,7 @@ async function LoginAttempt() {
     if (user === 'name' && password === 'password') {
         alert('God mode activated!');
         sessionStorage.setItem('user', 'admin');
-        sessionStorage.setItem('isLoggedIn', true);
-        // location.reload();
+        sessionStorage.setItem('isLoggedIn', 1);
         GetMovies();
         return;
     }
@@ -586,7 +588,7 @@ async function LoginAttempt() {
     {
         var getUser = await GetUserByName(user);
 
-        if(getUser === null) 
+        if(getUser == null) 
         {
             alert('login failed');
             location.reload();
@@ -599,7 +601,7 @@ async function LoginAttempt() {
             console.log('Password correct. Logging in...');
             sessionStorage.setItem('user', getUser.name);
             sessionStorage.setItem('studioId', getUser.id);
-            sessionStorage.setItem('isLoggedIn', true);
+            sessionStorage.setItem('isLoggedIn', 1);
 
             console.log('User: ' + user + ' StudioId: ' + getUser.id);
         }
