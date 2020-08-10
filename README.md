@@ -2,9 +2,12 @@
 
 Uppgift där Frontend för https://github.com/kemikal/upg-backendapi-sff skall skapas. Detta är första uppgiften i kursen webbutveckling på BoråsYH Systemutvecklare.NET.
 
-Uppgiftsbeskrivning:
+## Uppgiftsbeskrivning:
 
-__Nu skall du bygga en framsida för filmstudions uthyrningstjänst. 
+--- 
+
+
+Nu skall du bygga en framsida för filmstudions uthyrningstjänst. 
 Ni skall använda ett färdigt API från "backend avdelningen" som ni fått tillgång till. 
 
 Ni skall inte utveckla några nya funktioner till ert API, utan dokumentera det som inte går att lösa idag som ett underlag (kravspec) till backend teamet på vad du i frontend teamet önskar för nya funktioner och varför. Gärna med förslag på lösning. Detta underlag skall lämnas in som en del av reflektionen med uppgiften.
@@ -29,18 +32,21 @@ Ett arbetsflöde är tex att ha igång API lokalt via Visual Studio på en port.
 Samt starta och jobba med frontend projektet i Visual Studio Code och stara det på en egen port. 
 Då simulerar vi det som att det är två separata serverar som pratar med varandra, fast båda kör lokalt.
 
-Krav för G
+### Krav för G
 
-Sidan skall kunna besökas publikt och då se en lista på samtliga tillgängliga filmer, samt en trivia lista per film.
-Det skall visas ett omslag för varje film.
-Det skall finnas ett formulär för att registrera en ny filmstudio.
-En filmstudio skall kunna logga in med sitt användarnamn "name" samt lösenord "password".
-En inloggad filmstudio skall kunna låna en film, lämna tillbaka en film samt skriva en trivia om en film.
-Krav för VG
+* Sidan skall kunna besökas publikt och då se en lista på samtliga tillgängliga filmer, samt en trivia lista per film.
+* Det skall visas ett omslag för varje film.
+* Det skall finnas ett formulär för att registrera en ny filmstudio.
+* En filmstudio skall kunna logga in med sitt användarnamn "name" samt lösenord "password".
+* En inloggad filmstudio skall kunna låna en film, lämna tillbaka en film samt skriva en trivia om en film.
 
-En film skall bara kunna lånas det antal gånger totalt som det finns licenser "stock".
-En SFF administratör skall kunna se vilka filmer som är uthyrda till vilka studios.
-En SFF administratör skall godkänna "verified" en filmstudio innan de kan logga in.
-Filmstudion skall automatiskt meddelas via epost när de blivit godkända.
-En SFF administratör skall kunna lägga till nya filmer.
-En skriven reflektion över hur du har löst uppgiften.__
+### Krav för VG
+
+* En film skall bara kunna lånas det antal gånger totalt som det finns licenser "stock".
+* En SFF administratör skall kunna se vilka filmer som är uthyrda till vilka studios.
+* En SFF administratör skall godkänna "verified" en filmstudio innan de kan logga in.
+* Filmstudion skall automatiskt meddelas via epost när de blivit godkända.
+* En SFF administratör skall kunna lägga till nya filmer.
+* En skriven reflektion över hur du har löst uppgiften.
+
+--- 
