@@ -1,4 +1,4 @@
-window.addEventListener("load", function() {
+window.addEventListener("load", function () {
     var navbar = document.getElementById('navbar');
     var loggedIn = sessionStorage.getItem('isLoggedIn');
     var footer = document.getElementById('footer');
@@ -41,7 +41,7 @@ async function MovieString() {
     var triviaresponse = await fetch('https://localhost:44361/api/filmtrivia');
     var rentalsresponse = await fetch('https://localhost:44361/api/rentedfilm');
 
-    if(!movieresponse.ok || !triviaresponse.ok || !rentalsresponse.ok){
+    if (!movieresponse.ok || !triviaresponse.ok || !rentalsresponse.ok) {
         return 'Unable to fetch data from API, try to reload the page.';
     }
     var moviedata = await movieresponse.json();
@@ -49,73 +49,72 @@ async function MovieString() {
     var rentaldata = await rentalsresponse.json();
 
     if (studio !== null) {
-        var rentalresult = rentaldata.filter(function(rental) {
+        var rentalresult = rentaldata.filter(function (rental) {
             return rental.studioId == studio && rental.returned == false;
         });
     }
 
-    moviedata.forEach(function(movie) {
-        var triviaresult = triviadata.filter(function(trivia) {
+    moviedata.forEach(function (movie) {
+        var triviaresult = triviadata.filter(function (trivia) {
             return trivia.filmId === movie.id;
         });
 
-        if(loggedIn == 1 && user !== "admin"){
-            let rented = rentalresult.filter(function(r) {
+        if (loggedIn == 1 && user !== "admin") {
+            let rented = rentalresult.filter(function (r) {
                 return r.filmId === movie.id;
             })
-            if(rented.length > 0) movie.rented = true;
+            if (rented.length > 0) movie.rented = true;
             else movie.rented = false;
         }
 
-        if(triviaresult.length > 0) movie.trivia = triviaresult;
+        if (triviaresult.length > 0) movie.trivia = triviaresult;
         else movie.trivia = false;
     });
 
     let tempstring = '<div class="content" id="movie-content">';
 
     moviedata.forEach(m => {
-        tempstring += 
-        `<div class="moviecard">
+        tempstring +=
+            `<div class="moviecard">
             <div class="moviecontent">
                 <img src="img/poster.jpg" alt="" class="movieimg">
                 <div class="movieinfo">
                     <div>
                         <h2 class="movietitle">${m.name}</h2>
                         <ul class="movietrivia">`
-                        if(m.trivia == false){
-                            tempstring += `<li class="trivia-item">No trivia added</li>`;
-                        }
-                        else {
-                            m.trivia.forEach(function(t) {
-                            tempstring += `<li class="trivia-item">${t.trivia}</li>`
-                            });
-                        }
-                        tempstring += `
+        if (m.trivia == false) {
+            tempstring += `<li class="trivia-item">No trivia added</li>`;
+        }
+        else {
+            m.trivia.forEach(function (t) {
+                tempstring += `<li class="trivia-item">${t.trivia}</li>`
+            });
+        }
+        tempstring += `
                         </ul>
                     </div>
 
                     <div class="moviefooter">
 
                         <div class="moviebuttons">`
-                            if(loggedIn == 1) 
-                            {
-                                if (studio !== null) {
-                                    
-                                tempstring += ` <button class="loanbutton`;
-                                if (m.stock < 1 || m.rented) {
-                                    tempstring += ' btn-disabled';                                    
-                                }
-                                else tempstring += ` btn" id="loan-${m.id}`
-                                tempstring += `">Hyr</button>                            
+        if (loggedIn == 1) {
+            if (studio !== null) {
+
+                tempstring += ` <button class="loanbutton`;
+                if (m.stock < 1 || m.rented) {
+                    tempstring += ' btn-disabled';
+                }
+                else tempstring += ` btn" id="loan-${m.id}`
+                tempstring += `">Hyr</button>                            
                                 <button class="returnbutton`
-                                if(!m.rented) tempstring += ` btn-disabled`;
-                                else tempstring +=` btn" id="return-${m.id}`
-                                tempstring += `">Returnera</button>`;
-                                
-                                }
+                if (!m.rented) tempstring += ` btn-disabled`;
+                else tempstring += ` btn" id="return-${m.id}`
+                tempstring += `">Returnera</button>`;
+
+            }
 
 
-                                tempstring += `
+            tempstring += `
                                 <button class="btn triviabutton" id="displayTriviaBox-${m.id}">Lägg till Trivia</button>
                                 <div class="add-trivia hidden" id="triviaadd${m.id}">
                                     <div>
@@ -123,10 +122,10 @@ async function MovieString() {
                                         <button class="btn triviabutton" id="addTrivia-${m.id}">Spara</button>
                                     </div>
                                 </div>`;
-                            }
-                            tempstring += `</div>
+        }
+        tempstring += `</div>
                         <div class="stocknumber">
-                            <h4>Tillgängligt antal: ${m.stock > 0 ? m.stock : 0 }</h4>
+                            <h4>Tillgängligt antal: ${m.stock > 0 ? m.stock : 0}</h4>
                         </div>
                     </div>
                 </div>
@@ -134,7 +133,7 @@ async function MovieString() {
         </div>`
 
     });
-    
+
     output += tempstring;
     output += '</div>';
 
@@ -159,17 +158,17 @@ async function MovieString() {
 
         var addMovieButton = document.getElementById('addMovieButton');
         var addMovieInfoText = document.getElementById('addMovieInfo');
-        
-        addMovieButton.addEventListener('mouseover', function() {
+
+        addMovieButton.addEventListener('mouseover', function () {
             addMovieInfoText.classList.toggle('hidden');
             console.log('mouse over add movie');
         });
-        addMovieButton.addEventListener('mouseout', function() {
+        addMovieButton.addEventListener('mouseout', function () {
             console.log('mouseout addmovieinfo');
             addMovieInfoText.classList.toggle('hidden');
         });
 
-        addMovieButton.addEventListener('click', function() {
+        addMovieButton.addEventListener('click', function () {
             console.log('clicked on add movie');
             AddMovie();
         });
@@ -179,8 +178,8 @@ async function MovieString() {
 
 async function AddMovie() {
     var contentDiv = document.getElementById("main-content");
-    let contentstring = 
-    `<div id="add-movie-content" class="content addMovieForm">
+    let contentstring =
+        `<div id="add-movie-content" class="content addMovieForm">
         <div class="newMovieDiv">
             <div class="newMovieInput">
                 <label for="newMovieTitle">Filmtitel:</label><br>
@@ -201,7 +200,7 @@ async function AddMovie() {
 
     var addNewMovieButton = document.getElementById('addMovieButton');
 
-    addNewMovieButton.addEventListener('click', async function() {
+    addNewMovieButton.addEventListener('click', async function () {
 
         console.log('movie submitted');
 
@@ -210,19 +209,19 @@ async function AddMovie() {
         var newMovieAvaliable = document.getElementById('newMovieAvaliable').value;
 
         // Send trivia to API
-        const newMovieData = { 
-        "name": newMovieTitle,
-        "stock": Number(newMovieAvaliable)
+        const newMovieData = {
+            "name": newMovieTitle,
+            "stock": Number(newMovieAvaliable)
         }
 
         console.log(newMovieData);
 
         var rentResponse = await fetch('https://localhost:44361/api/film', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newMovieData),
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newMovieData),
         });
 
         GetMovies();
@@ -251,7 +250,7 @@ async function AddTrivia(id) {
 
 
     // Send trivia to API
-    const triviadata = { 
+    const triviadata = {
         "filmId": Number(movieId),
         "trivia": triviatext
     };
@@ -259,11 +258,11 @@ async function AddTrivia(id) {
     console.log(triviadata);
 
     var rentResponse = await fetch('https://localhost:44361/api/filmtrivia/', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(triviadata),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(triviadata),
     });
     GetMovies();
 }
@@ -282,18 +281,18 @@ async function ListRentedMovies() {
     var rentalsresponse = await fetch('https://localhost:44361/api/rentedfilm');
     var movieresponse = await fetch('https://localhost:44361/api/film');
 
-    if(!rentalsresponse.ok || !movieresponse.ok){
+    if (!rentalsresponse.ok || !movieresponse.ok) {
         return 'Unable to fetch data from API, try to reload the page.';
     }
     var rentaldata = await rentalsresponse.json();
     var moviedata = await movieresponse.json();
-    
-    var rentedMovies = rentaldata.filter(function(rental) {
+
+    var rentedMovies = rentaldata.filter(function (rental) {
         return rental.returned == false;
     });
 
-    rentedMovies.forEach(function(r){
-        var title = moviedata.filter(function(m) {
+    rentedMovies.forEach(function (r) {
+        var title = moviedata.filter(function (m) {
             return m.id === r.filmId;
         });
 
@@ -304,7 +303,7 @@ async function ListRentedMovies() {
     let output;
 
     // Not finished.....
-    rentedMovies.forEach(function(movie){
+    rentedMovies.forEach(function (movie) {
         output += `
         <div class="rented-movie content">
         <h3>StudioId: ${movie.movieTitle}</h3>
@@ -326,11 +325,11 @@ async function RequestMovie(id) {
     console.log(data);
 
     var rentResponse = await fetch('https://localhost:44361/api/rentedfilm', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(data),
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
     });
 
     console.log(rentResponse.json());
@@ -345,7 +344,7 @@ async function ReturnMovie(id) {
 
     var rentalsresponse = await fetch('https://localhost:44361/api/rentedfilm');
 
-    if(!rentalsresponse.ok){
+    if (!rentalsresponse.ok) {
         return 'Unable to fetch data from API, try to reload the page.';
     }
     var rentaldata = await rentalsresponse.json();
@@ -353,35 +352,33 @@ async function ReturnMovie(id) {
     console.log(rentaldata);
 
     if (rentaldata.length > 0) {
-        var rentalresult = rentaldata.filter(function(rental) {
+        var rentalresult = rentaldata.filter(function (rental) {
             return rental.studioId == studio && rental.filmId == id && rental.returned == false;
         });
 
         console.log(rentalresult);
 
-        const data = { 
+        const data = {
             "filmId": rentalresult[0].filmId,
             "id": rentalresult[0].id,
             "returned": true,
-            "studioId": rentalresult[0].studioId 
+            "studioId": rentalresult[0].studioId
         };
 
         console.log(data);
 
         var rentResponse = await fetch('https://localhost:44361/api/rentedfilm/' + rentalresult[0].id, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
         });
     }
     GetMovies();
 }
 
 async function GetMovies() {
-
-    //await MovieString();
 
     var contentDiv = document.getElementById("main-content");
 
@@ -399,7 +396,7 @@ async function GetMovies() {
     var triviaresponse = await fetch('https://localhost:44361/api/filmtrivia');
     var rentalsresponse = await fetch('https://localhost:44361/api/rentedfilm');
 
-    if(!movieresponse.ok || !triviaresponse.ok || !rentalsresponse.ok){
+    if (!movieresponse.ok || !triviaresponse.ok || !rentalsresponse.ok) {
         return 'Unable to fetch data from API, try to reload the page.';
     }
     var moviedata = await movieresponse.json();
@@ -407,73 +404,72 @@ async function GetMovies() {
     var rentaldata = await rentalsresponse.json();
 
     if (studio !== null) {
-        var rentalresult = rentaldata.filter(function(rental) {
+        var rentalresult = rentaldata.filter(function (rental) {
             return rental.studioId == studio && rental.returned == false;
         });
     }
 
-    moviedata.forEach(function(movie) {
-        var triviaresult = triviadata.filter(function(trivia) {
+    moviedata.forEach(function (movie) {
+        var triviaresult = triviadata.filter(function (trivia) {
             return trivia.filmId === movie.id;
         });
 
-        if(loggedIn == 1 && user !== "admin"){
-            let rented = rentalresult.filter(function(r) {
+        if (loggedIn == 1 && user !== "admin") {
+            let rented = rentalresult.filter(function (r) {
                 return r.filmId === movie.id;
             })
-            if(rented.length > 0) movie.rented = true;
+            if (rented.length > 0) movie.rented = true;
             else movie.rented = false;
         }
 
-        if(triviaresult.length > 0) movie.trivia = triviaresult;
+        if (triviaresult.length > 0) movie.trivia = triviaresult;
         else movie.trivia = false;
     });
 
     let tempstring = '<div class="content" id="movie-content">';
 
     moviedata.forEach(m => {
-        tempstring += 
-        `<div class="moviecard">
+        tempstring +=
+            `<div class="moviecard">
             <div class="moviecontent">
                 <img src="img/poster.jpg" alt="" class="movieimg">
                 <div class="movieinfo">
                     <div>
                         <h2 class="movietitle">${m.name}</h2>
                         <ul class="movietrivia">`
-                        if(m.trivia == false){
-                            tempstring += `<li class="trivia-item">No trivia added</li>`;
-                        }
-                        else {
-                            m.trivia.forEach(function(t) {
-                            tempstring += `<li class="trivia-item">${t.trivia}</li>`
-                            });
-                        }
-                        tempstring += `
+        if (m.trivia == false) {
+            tempstring += `<li class="trivia-item">No trivia added</li>`;
+        }
+        else {
+            m.trivia.forEach(function (t) {
+                tempstring += `<li class="trivia-item">${t.trivia}</li>`
+            });
+        }
+        tempstring += `
                         </ul>
                     </div>
 
                     <div class="moviefooter">
 
                         <div class="moviebuttons">`
-                            if(loggedIn == 1) 
-                            {
-                                if (studio !== null) {
-                                    
-                                tempstring += ` <button class="loanbutton`;
-                                if (m.stock < 1 || m.rented) {
-                                    tempstring += ' btn-disabled';                                    
-                                }
-                                else tempstring += ` btn" id="loan-${m.id}`
-                                tempstring += `">Hyr</button>                            
+        if (loggedIn == 1) {
+            if (studio !== null) {
+
+                tempstring += ` <button class="loanbutton`;
+                if (m.stock < 1 || m.rented) {
+                    tempstring += ' btn-disabled';
+                }
+                else tempstring += ` btn" id="loan-${m.id}`
+                tempstring += `">Hyr</button>                            
                                 <button class="returnbutton`
-                                if(!m.rented) tempstring += ` btn-disabled`;
-                                else tempstring +=` btn" id="return-${m.id}`
-                                tempstring += `">Returnera</button>`;
-                                
-                                }
+                if (!m.rented) tempstring += ` btn-disabled`;
+                else tempstring += ` btn" id="return-${m.id}`
+                tempstring += `">Returnera</button>`;
+
+            }
 
 
-                                tempstring += `
+            tempstring += `
                                 <button class="btn triviabutton" id="displayTriviaBox-${m.id}">Lägg till Trivia</button>
                                 <div class="add-trivia hidden" id="triviaadd${m.id}">
                                     <div>
@@ -481,10 +477,10 @@ async function GetMovies() {
                                         <button class="btn triviabutton" id="addTrivia-${m.id}">Spara</button>
                                     </div>
                                 </div>`;
-                            }
-                            tempstring += `</div>
+        }
+        tempstring += `</div>
                         <div class="stocknumber">
-                            <h4>Tillgängligt antal: ${m.stock > 0 ? m.stock : 0 }</h4>
+                            <h4>Tillgängligt antal: ${m.stock > 0 ? m.stock : 0}</h4>
                         </div>
                     </div>
                 </div>
@@ -492,7 +488,7 @@ async function GetMovies() {
         </div>`
 
     });
-    
+
     output += tempstring;
     output += '</div>';
 
@@ -511,24 +507,24 @@ async function GetMovies() {
 
         var addMovieButton = document.getElementById('addMovieButton');
         var addMovieInfoText = document.getElementById('addMovieInfo');
-        
-        addMovieButton.addEventListener('mouseover', function() {
+
+        addMovieButton.addEventListener('mouseover', function () {
             addMovieInfoText.classList.toggle('hidden');
             console.log('mouse over add movie');
         });
-        addMovieButton.addEventListener('mouseout', function() {
+        addMovieButton.addEventListener('mouseout', function () {
             console.log('mouseout addmovieinfo');
             addMovieInfoText.classList.toggle('hidden');
         });
 
-        addMovieButton.addEventListener('click', function() {
+        addMovieButton.addEventListener('click', function () {
             console.log('clicked on add movie');
             AddMovie();
         });
     }
-    
+
     var movielist = document.getElementById('movie-content');
-    movielist.addEventListener('click', function(e) {
+    movielist.addEventListener('click', function (e) {
 
         console.log('button clicked in div. Is this the problem?');
         console.log('Event: ' + e.target.id);
@@ -586,9 +582,9 @@ function Navbar() {
         </ul>
         <ul id="authentication" class="flex-h navbar">`;
 
-        console.log('Loggedin should add logout button: ' + loggedIn);
+    console.log('Loggedin should add logout button: ' + loggedIn);
 
-    if(loggedIn == 1) {
+    if (loggedIn == 1) {
         output += `<li class="nav-menu-item"><a id="menu-logout" href="">Logga ut</a></li>`;
 
         if (user == 'admin') {
@@ -605,12 +601,12 @@ function Navbar() {
     navbar.innerHTML = output;
 
     var movieButton = document.getElementById('menu-movies');
-    movieButton.addEventListener('click', function() {
+    movieButton.addEventListener('click', function () {
         console.log('clicked movies');
         GetMovies();
     });
 
-    if(loggedIn == 1) {
+    if (loggedIn == 1) {
         var logoutButton = document.getElementById('menu-logout');
         logoutButton.addEventListener('click', () => {
             Logout();
@@ -643,8 +639,8 @@ function LoginRegisterPage() {
     console.log('Inside LoginRegisterPage');
 
     contentDiv.innerHTML = "";
-    let contentstring = 
-    `<div id="studio-content" class="content">
+    let contentstring =
+        `<div id="studio-content" class="content">
         <div id="login-form">
             <div class="login-register">
                 <div class="login">
@@ -712,19 +708,19 @@ function LoginRegisterPage() {
     var registerButton = document.getElementById('registerButton');
 
     // Hover over info button shows info about registering
-    registerInfoLogo.addEventListener('mouseover', function() {
+    registerInfoLogo.addEventListener('mouseover', function () {
         info.style.display = "block";
     });
-    registerInfoLogo.addEventListener('mouseleave', function() {
+    registerInfoLogo.addEventListener('mouseleave', function () {
         info.style.display = "none";
     });
 
     loginButton.addEventListener('click', () => {
         LoginAttempt();
     });
-    
+
     registerButton.addEventListener('click', () => {
-        RegisterStudio();    
+        RegisterStudio();
     });
 
     console.log('End of LoginPage');
@@ -744,12 +740,10 @@ async function LoginAttempt() {
         GetMovies();
         return;
     }
-    else
-    {
+    else {
         var getUser = await GetUserByName(user);
 
-        if(getUser == null) 
-        {
+        if (getUser == null) {
             alert('login failed');
             LoginRegisterPage();
         }
@@ -782,7 +776,7 @@ async function RegisterStudio() {
 
     console.log('New user registration. User: ' + newStudioName + " Pwd1: " + pwd1 + " Pwd2: " + pwd2);
 
-    if(pwd1 != pwd2){
+    if (pwd1 != pwd2) {
         alert('passwords did not match. Try again');
         RegisterStudio();
     }
@@ -792,14 +786,13 @@ async function RegisterStudio() {
 
         // Check if username is taken
         var existingUser = await GetUserByName(newStudioName);
-        if(existingUser !== null)
-        {
+        if (existingUser !== null) {
             alert('Username taken. Try another one');
             return;
         }
 
         // Prepare POST request data.
-        data = { "name": newStudioName, "password": pwd1, "verified": false}
+        data = { "name": newStudioName, "password": pwd1, "verified": false }
 
         response = await fetch('https://localhost:44361/api/filmstudio', {
             method: 'POST',
@@ -809,12 +802,11 @@ async function RegisterStudio() {
             body: JSON.stringify(data)
         });
 
-        if(response.ok)
-        {
+        if (response.ok) {
             alert('studio is now registered. Await verification by admin');
             LoginRegisterPage();
         }
-        else{
+        else {
             alert('Something went wrong, try again')
         }
     }
@@ -824,17 +816,17 @@ async function RegisterStudio() {
 async function GetUserByName(username) {
     var userData = await fetch('https://localhost:44361/api/filmstudio');
     var userList = await userData.json();
-    
-    var userFromDb = userList.filter(function(u) {
+
+    var userFromDb = userList.filter(function (u) {
         return u.name === username;
     });
 
     console.log('GetUserByName found: ' + userFromDb);
-    
+
     return userFromDb.length < 1 ? null : userFromDb[0];
 }
 
-// Should return a page withh a table with non verified studios.
+// Should return a page with a table with non verified studios.
 async function ListUnverifiedStudios() {
 
     var contentDiv = document.getElementById("main-content");
@@ -844,7 +836,7 @@ async function ListUnverifiedStudios() {
 
     var studiosList = await studioData.json();
 
-    var unverifiedStudios = studiosList.filter(function(s) {
+    var unverifiedStudios = studiosList.filter(function (s) {
         return s.verified === false;
     });
 
@@ -854,7 +846,7 @@ async function ListUnverifiedStudios() {
 
     else {
 
-    htmlString = `
+        htmlString = `
     <div class="newStudioVerifications content">
     <table style="width:100%">
         <thead>
@@ -866,8 +858,8 @@ async function ListUnverifiedStudios() {
         </thead>
         <tbody>`
 
-    unverifiedStudios.forEach(s => {
-        htmlString += `
+        unverifiedStudios.forEach(s => {
+            htmlString += `
                     <tr>
                         <td>${s.name}</td>
                         <td>${s.id}</td>
@@ -876,11 +868,11 @@ async function ListUnverifiedStudios() {
                 </tbody>
             </table>
         </div>`;
-    });
+        });
 
-    contentDiv.innerHTML = htmlString;
+        contentDiv.innerHTML = htmlString;
 
-    console.log('Studio list should be loaded...');
+        console.log('Studio list should be loaded...');
     }
 }
 
@@ -888,21 +880,21 @@ async function VerifyStudio(id) {
     let studio = await fetch('https://localhost:44361/api/filmstudio/' + id);
     let studioData = await studio.json();
 
-    const data = { 
+    const data = {
         "id": studioData.id,
         "name": studioData.name,
         "password": trstudioData.password,
-        "studioId": true 
+        "studioId": true
     };
 
     console.log(data);
 
     var rentResponse = await fetch('https://localhost:44361/api/filmstudio/' + id, {
-    method: 'PUT',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
     });
 
     if (rentResponse.ok) {
