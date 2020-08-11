@@ -134,8 +134,10 @@ export async function RegisterStudio() {
     var pwd2 = document.getElementById('newpwd2').value;
 
     if (pwd1 != pwd2) {
+
         alert('passwords did not match. Try again');
-        RegisterStudio();
+        LoginRegisterPage();
+
     }
     else {
 
@@ -166,6 +168,7 @@ export async function RegisterStudio() {
         else {
             alert('Something went wrong, try again')
         }
+
     }
 }
 
