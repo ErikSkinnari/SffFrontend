@@ -1,6 +1,6 @@
 import * as moviehandler from './modules/moviehandler.js';
 import * as studiohandler from './modules/studiohandler.js';
-import * as shared from './views/shared.js';
+import * as shared from './modules/shared.js';
 
 shared.Navbar();
 shared.Footer();
@@ -31,19 +31,15 @@ let mainRouter = async function (route) {
 
 async function routeFunction() {
     var route = window.location.hash;
-    console.log(route);
 
     if (route.length == 0) { route = "#"; }
-    console.log(route);
     await mainRouter(route);
 }
 
 window.addEventListener("hashchange", function () {
-    console.log("hashchange event");
     routeFunction();
 });
 
 window.addEventListener("DOMContentLoaded", function (ev) {
-    console.log("DOMContentLoaded event");
     routeFunction();
 });

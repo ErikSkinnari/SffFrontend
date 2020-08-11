@@ -29,6 +29,7 @@ html {
 
 #main-content {
   min-height: calc(100vh - 100px);
+  padding-top: 1em;
 }
 
 #movie-content {
@@ -64,7 +65,7 @@ html {
 }
 
 .nav-menu-item > a {
-  font-size: 15px;
+  font-size: 1em;
   color: white;
   text-decoration: none;
   transition: 0.5s;
@@ -72,7 +73,7 @@ html {
 }
 
 .nav-menu-item > a:hover {
-  font-size: 20px;
+  font-size: 1.1em;
   transition: 0.5s;
 }
 
@@ -355,12 +356,6 @@ html {
   color: white;
 }
 
-.add-movie-content {
-  /* display: flex; */
-  /* justify-content: center;
-    align-items: center; */
-}
-
 .newMovieDiv {
   padding: 10px;
   display: flex;
@@ -422,18 +417,22 @@ td {
 }
 
 .rented-movie {
+  width: 25em;
   margin: auto;
   padding-top: 3em;
-  width: 50%;
-  /* display: flex; */
-  /* justify-content: space-evenly; */
   text-align: left;
 }
 
-.rented-movie>h2 {
+.rented-movie > h2 {
   margin-bottom: 1em;
 }
 
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
+}
+
+.center {
+  text-align: center;
 }

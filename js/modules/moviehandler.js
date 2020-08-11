@@ -1,4 +1,4 @@
-import * as shared from '../views/shared.js';
+import * as shared from './shared.js';
 
 export async function moviePage() {
 
@@ -265,7 +265,6 @@ export async function ListRentedMovies() {
     var moviedata = await movieresponse.json();
 
     var rentedMovies = rentaldata.filter(function (rental) {
-        console.log('Rental: ' + rental);
         return rental.returned == false;
     });
 
@@ -273,16 +272,13 @@ export async function ListRentedMovies() {
         var title = moviedata.filter(function (m) {
             return m.id === r.filmId;
         });
-        console.log(title);
 
         r.movieTitle = title[0].name;
-
-        console.log(r);
     });
 
     var contentDiv = document.getElementById("main-content");
     let output = `<div class="rented-movie">
-                    <h2>List of rented movies</h2>
+                    <h2>Uthyrda filmer:</h2>
                     <table>
                         <tr>
                             <th>Movie Title</th>
@@ -290,20 +286,20 @@ export async function ListRentedMovies() {
                         </tr>`;
 
     rentedMovies.forEach(function (movie) {
-        console.log(movie);
-        output +=   `<tr>
+        output += `<tr>
                         <td>Movie: ${movie.movieTitle}</td>
                         <td>StudioId: ${movie.studioId}</td>
                     </tr>`
     });
 
-    output +=  '</table></div>';
+    output += '</table></div>';
 
     contentDiv.innerHTML = output;
 }
 
 function GetMovies() {
     window.location = '#movies';
+    window.location.reload();
 }
 
 export async function AddMovie() {
@@ -332,8 +328,6 @@ export async function AddMovie() {
 
     addNewMovieButton.addEventListener('click', async function () {
 
-        console.log('movie submitted');
-
         var newMovieTitle = document.getElementById('newMovieTitle').value;
         var newMovieImg = document.getElementById('newMovieImg').value;
         var newMovieAvaliable = document.getElementById('newMovieAvaliable').value;
@@ -344,8 +338,6 @@ export async function AddMovie() {
             "stock": Number(newMovieAvaliable)
         }
 
-        console.log(newMovieData);
-
         var rentResponse = await fetch('https://localhost:44361/api/film', {
             method: 'POST',
             headers: {
@@ -354,16 +346,13 @@ export async function AddMovie() {
             body: JSON.stringify(newMovieData),
         });
 
-        window.location = '#';
+        GetMovies();
     });
 }
 
 export function DisplayTriviaBox(id) {
-    console.log("DisplayTriviaBox function called. Id: " + id);
     var triviaboxid = `triviaadd` + id;
-    console.log('Triviaboxid: ' + triviaboxid);
     var triviabox = document.getElementById(triviaboxid);
-    console.log('removing hidden from ' + triviabox.id);
     triviabox.classList.toggle("hidden");
 }
 
@@ -378,23 +367,14 @@ export async function AddTrivia(id) {
 
     // Hide trivia input div
     var triviaboxid = `triviaadd` + id;
-    console.log('Triviaboxid: ' + triviaboxid);
     var triviabox = document.getElementById(triviaboxid);
-    console.log('removing hidden from ' + triviabox.id);
     triviabox.classList.toggle("hidden");
-
-
-    console.log('MovieId: ' + id);
-    console.log('Triviatext: ' + triviatext);
-
 
     // Send trivia to API
     const triviadata = {
         "filmId": Number(movieId),
         "trivia": triviatext
     };
-
-    console.log(triviadata);
 
     await fetch('https://localhost:44361/api/filmtrivia/', {
         method: 'POST',

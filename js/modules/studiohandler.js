@@ -1,23 +1,14 @@
-import * as shared from '../views/shared.js';
-
-
-export function studioPage() {
-    return 'studio page'
-}
+import * as shared from './shared.js';
 
 export function Logout() {
-    console.log('Logging out');
     sessionStorage.clear();
     shared.Navbar();
     window.location = '#';
-
 }
 
 export function LoginRegisterPage() {
 
     let contentDiv = document.getElementById('main-content');
-
-    console.log('Inside LoginRegisterPage');
 
     let output = "";
     output +=
@@ -79,8 +70,6 @@ export function LoginRegisterPage() {
         <div id="registerInfoText">Registrera en ny filmstudio för att kunna hyra filmer samt ta del av våra andra medlemsförmåner</div>
         </div>`;
 
-    console.log('should set login page visible here.');
-
     contentDiv.innerHTML = output;
 
     var registerInfoLogo = document.getElementById('registerInfo');
@@ -103,18 +92,13 @@ export function LoginRegisterPage() {
     registerButton.addEventListener('click', () => {
         RegisterStudio();
     });
-
-    console.log('End of LoginPage');
 }
 
 export async function LoginAttempt() {
     var user = document.getElementById('username').value;
     var password = document.getElementById('pwd').value;
 
-    console.log('User: ' + user);
-    console.log('Password: ' + password);
-
-    if (user === 'name' && password === 'password') {
+    if (user === 'test' && password === '1234') {
         alert('God mode activated!');
         sessionStorage.setItem('user', 'admin');
         sessionStorage.setItem('isLoggedIn', 1);
@@ -131,12 +115,9 @@ export async function LoginAttempt() {
             alert('Studio must be verified before first login');
         }
         else if (getUser !== null && password === getUser.password) {
-            console.log('Password correct. Logging in...');
             sessionStorage.setItem('user', getUser.name);
             sessionStorage.setItem('studioId', getUser.id);
             sessionStorage.setItem('isLoggedIn', 1);
-
-            console.log('User: ' + user + ' StudioId: ' + getUser.id);
         }
         else {
             alert('Login failed');
@@ -151,8 +132,6 @@ export async function RegisterStudio() {
     var newStudioName = document.getElementById('studioname').value;
     var pwd1 = document.getElementById('newpwd1').value;
     var pwd2 = document.getElementById('newpwd2').value;
-
-    console.log('New user registration. User: ' + newStudioName + " Pwd1: " + pwd1 + " Pwd2: " + pwd2);
 
     if (pwd1 != pwd2) {
         alert('passwords did not match. Try again');
@@ -199,15 +178,11 @@ export async function GetUserByName(username) {
         return u.name === username;
     });
 
-    console.log('GetUserByName found: ' + userFromDb);
-
     return userFromDb.length < 1 ? null : userFromDb[0];
 }
 
 // Should return a page with a table with non verified studios.
 export async function ListUnverifiedStudios() {
-
-    console.log('List studios');
 
     var contentDiv = document.getElementById("main-content");
     let output = "";
@@ -216,16 +191,13 @@ export async function ListUnverifiedStudios() {
 
     var studiosList = await studioData.json();
 
-    console.log(studiosList);
-
     var unverifiedStudios = studiosList.filter(function (s) {
         return s.verified === false;
     });
 
     if (unverifiedStudios.length < 1) {
-        output = "<h3>No unverified studios</h3>";
+        output = '<h3 class="center">Inga studios att verifiera</h3>';
     }
-
     else {
 
         output = `<div class="newStudioVerifications content">
@@ -251,21 +223,19 @@ export async function ListUnverifiedStudios() {
         output += `</table>
                     </div>`
     }
-                
+
     contentDiv.innerHTML = output;
+
+    // "Generic" eventlistener.
     window.addEventListener('click', function (e) {
-        console.log(e);
         shared.eventHandler(e);
     });
 }
 
 export async function VerifyStudio(id) {
-    console.log('Verify studio with id: ' + id);
 
     let studio = await fetch('https://localhost:44361/api/filmstudio/' + id);
     let studioData = await studio.json();
-
-    console.log(studioData);
 
     const data = {
         "id": studioData.id,
@@ -273,8 +243,6 @@ export async function VerifyStudio(id) {
         "password": studioData.password,
         "verified": true
     };
-
-    console.log(data);
 
     var rentResponse = await fetch('https://localhost:44361/api/filmstudio/' + id, {
         method: 'PUT',
