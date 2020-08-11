@@ -2,10 +2,13 @@
 
 Uppgift där Frontend för https://github.com/kemikal/upg-backendapi-sff skall skapas. Detta är första uppgiften i kursen webbutveckling på BoråsYH Systemutvecklare.NET.
 
-## Uppgiftsbeskrivning:
+### Admin-inloggning: 
+* user: test
+* password: 1234
 
 --- 
 
+## Uppgiftsbeskrivning:
 
 Nu skall du bygga en framsida för filmstudions uthyrningstjänst. 
 Ni skall använda ett färdigt API från "backend avdelningen" som ni fått tillgång till. 
