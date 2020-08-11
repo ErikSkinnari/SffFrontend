@@ -265,6 +265,7 @@ export async function ListRentedMovies() {
     var moviedata = await movieresponse.json();
 
     var rentedMovies = rentaldata.filter(function (rental) {
+        console.log('Rental: ' + rental);
         return rental.returned == false;
     });
 
@@ -272,22 +273,31 @@ export async function ListRentedMovies() {
         var title = moviedata.filter(function (m) {
             return m.id === r.filmId;
         });
+        console.log(title);
 
-        r.movieTitle = title.name;
+        r.movieTitle = title[0].name;
+
+        console.log(r);
     });
 
     var contentDiv = document.getElementById("main-content");
-    let output;
+    let output = `<div class="rented-movie">
+                    <h2>List of rented movies</h2>
+                    <table>
+                        <tr>
+                            <th>Movie Title</th>
+                            <th>Studio Id</th>
+                        </tr>`;
 
-    // Not finished.....
     rentedMovies.forEach(function (movie) {
-        output += `
-        <div class="rented-movie content">
-        <h3>StudioId: ${movie.movieTitle}</h3>
-        <h3>StudioId</h3>
-        </div>
-        `
+        console.log(movie);
+        output +=   `<tr>
+                        <td>Movie: ${movie.movieTitle}</td>
+                        <td>StudioId: ${movie.studioId}</td>
+                    </tr>`
     });
+
+    output +=  '</table></div>';
 
     contentDiv.innerHTML = output;
 }

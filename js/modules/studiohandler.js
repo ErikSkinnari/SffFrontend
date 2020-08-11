@@ -207,12 +207,16 @@ export async function GetUserByName(username) {
 // Should return a page with a table with non verified studios.
 export async function ListUnverifiedStudios() {
 
+    console.log('List studios');
+
     var contentDiv = document.getElementById("main-content");
     let output = "";
 
     var studioData = await fetch('https://localhost:44361/api/filmstudio');
 
     var studiosList = await studioData.json();
+
+    console.log(studiosList);
 
     var unverifiedStudios = studiosList.filter(function (s) {
         return s.verified === false;
@@ -246,10 +250,9 @@ export async function ListUnverifiedStudios() {
 
         output += `</table>
                     </div>`
-
-        contentDiv.innerHTML = output;
     }
-
+                
+    contentDiv.innerHTML = output;
     window.addEventListener('click', function (e) {
         console.log(e);
         shared.eventHandler(e);
@@ -257,14 +260,18 @@ export async function ListUnverifiedStudios() {
 }
 
 export async function VerifyStudio(id) {
+    console.log('Verify studio with id: ' + id);
+
     let studio = await fetch('https://localhost:44361/api/filmstudio/' + id);
     let studioData = await studio.json();
+
+    console.log(studioData);
 
     const data = {
         "id": studioData.id,
         "name": studioData.name,
         "password": studioData.password,
-        "studioId": true
+        "verified": true
     };
 
     console.log(data);

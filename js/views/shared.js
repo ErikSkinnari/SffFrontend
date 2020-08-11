@@ -46,7 +46,7 @@ export function Navbar() {
         output += `<li class="nav-menu-item"><a id="menu-logout" href="#logout">Logga ut</a></li>`;
     }
     else {
-        output += `<li class="nav-menu-item"><a id="menu-login" href="#login">Logga In</a></li>`;
+        output += `<li class="nav-menu-item"><a id="menu-login" href="#login">Logga In / Registrera</a></li>`;
     }
 
     output += `</ul></div>`;
