@@ -422,7 +422,18 @@ td {
 }
 
 .rented-movie {
-  width: 100%;
-  display: flex;
-  justify-content: space-evenly;
+  margin: auto;
+  padding-top: 3em;
+  width: 50%;
+  /* display: flex; */
+  /* justify-content: space-evenly; */
+  text-align: left;
+}
+
+.rented-movie>h2 {
+  margin-bottom: 1em;
+}
+
+table, th, td {
+  border: 1px solid black;
 }

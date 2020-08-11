@@ -15,7 +15,7 @@ let mainRouter = async function (route) {
     else if (route == '#studios') {
         studiohandler.studioPage();
     }
-    else if (route == '#rendedMovies') {
+    else if (route == '#rentedMovies') {
         moviehandler.ListRentedMovies();
     }
     else if (route == '#newStudios') {
