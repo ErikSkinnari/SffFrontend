@@ -50,7 +50,7 @@ Då simulerar vi det som att det är två separata serverar som pratar med varan
 * En SFF administratör skall godkänna "verified" en filmstudio innan de kan logga in.
 * Filmstudion skall automatiskt meddelas via epost när de blivit godkända.
 * En SFF administratör skall kunna lägga till nya filmer.
-* En skriven reflektion över hur du har löst uppgiften.
+* En skriven reflektion över hur du har löst uppgiften. //
 
 --- 
 
